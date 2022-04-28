@@ -15,7 +15,7 @@ public class CrearArbolGeneral {
 //			  |        / | | \
 //			 -83 	 33 -6 17 9		Nivel 4
 	
-	public ArbolGeneral<Integer> crearArbolEntero() {
+	public ArbolGeneral<Integer> crearArbolDeEnteros() {
 		
 		ArbolGeneral<Integer> arbol1 = new ArbolGeneral<Integer>(-2);
 		ArbolGeneral<Integer> arbol2 = new ArbolGeneral<Integer>(-1);
