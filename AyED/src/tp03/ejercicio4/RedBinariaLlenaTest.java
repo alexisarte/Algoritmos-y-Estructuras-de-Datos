@@ -8,10 +8,11 @@ public class RedBinariaLlenaTest {
 	public static void main(String[] args) {
 		
 		CrearArbolBinario crear = new CrearArbolBinario(); 
-		ArbolBinario<Integer> arbol = crear.crearArbolDeEnteros();
+		ArbolBinario<Integer> arbol = crear.crearArbolInteger2();
 		
 		RedBinariaLlena red = new RedBinariaLlena(arbol);
 		
+		arbol.printPreorden();
 		System.out.println("Retardo de reenvío: " + red.retardoReenvio());
 		
 	}

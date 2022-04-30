@@ -124,5 +124,44 @@ public class CrearArbolGeneral {
 
 		return arbol;
 	}
+	
+	
+	public ArbolGeneral<Character> crearArbolCharacter() {
+
+		ListaEnlazadaGenerica<ArbolGeneral<Character>> hijos = new ListaEnlazadaGenerica<>();
+		ListaEnlazadaGenerica<ArbolGeneral<Character>> hijosG = new ListaEnlazadaGenerica<>();
+		ListaEnlazadaGenerica<ArbolGeneral<Character>> hijosJ = new ListaEnlazadaGenerica<>();
+		ListaEnlazadaGenerica<ArbolGeneral<Character>> hijosC = new ListaEnlazadaGenerica<>();
+		ListaEnlazadaGenerica<ArbolGeneral<Character>> hijosD = new ListaEnlazadaGenerica<>();
+
+		// Nivel 3
+		hijosG.agregarFinal(new ArbolGeneral<Character>('L'));
+
+		hijosJ.agregarFinal(new ArbolGeneral<Character>('M'));
+		hijosJ.agregarFinal(new ArbolGeneral<Character>('N'));
+
+		// Nivel
+		hijos.agregarFinal(new ArbolGeneral<Character>('B'));
+		ArbolGeneral<Character> nodoC = new ArbolGeneral<Character>('C', hijosC);
+		hijosC.agregarFinal(new ArbolGeneral<Character>('F'));
+		ArbolGeneral<Character> nodoG = new ArbolGeneral<Character>('G', hijosG);
+		hijosC.agregarFinal(nodoG);
+
+		ArbolGeneral<Character> nodoD = new ArbolGeneral<Character>('D', hijosD);
+		hijosD.agregarFinal(new ArbolGeneral<Character>('H'));
+		hijosD.agregarFinal(new ArbolGeneral<Character>('I'));
+		ArbolGeneral<Character> nodoJ = new ArbolGeneral<Character>('J', hijosJ);
+		hijosD.agregarFinal(nodoJ);
+		hijosD.agregarFinal(new ArbolGeneral<Character>('K'));
+
+		hijos.agregarFinal(nodoC);
+		hijos.agregarFinal(nodoD);
+		hijos.agregarFinal(new ArbolGeneral<Character>('E'));
+
+		// Nivel 0
+		ArbolGeneral<Character> arbol = new ArbolGeneral<Character>('A', hijos);
+
+		return arbol;
+  }
 
 }

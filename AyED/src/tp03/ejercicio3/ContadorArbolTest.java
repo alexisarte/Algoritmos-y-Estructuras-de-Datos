@@ -9,7 +9,7 @@ public class ContadorArbolTest {
 	public static void main(String[] args) {
 		
 		CrearArbolBinario crear = new CrearArbolBinario(); 
-		ArbolBinario<Integer> arbol = crear.crearArbolDeEnteros();
+		ArbolBinario<Integer> arbol = crear.crearArbolInteger();
 		
 		ContadorArbol contador = new ContadorArbol(arbol);
 		

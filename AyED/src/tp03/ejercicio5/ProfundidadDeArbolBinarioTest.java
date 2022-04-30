@@ -8,7 +8,7 @@ public class ProfundidadDeArbolBinarioTest {
 	public static void main(String[] args) {
 
 		CrearArbolBinario crear = new CrearArbolBinario();
-		ArbolBinario<Integer> arbol = crear.crearArbolDeEnteros();
+		ArbolBinario<Integer> arbol = crear.crearArbolInteger();
 
 		ProfundidadDeArbolBinario profundidad = new ProfundidadDeArbolBinario(arbol);
 		int nivel = 2;

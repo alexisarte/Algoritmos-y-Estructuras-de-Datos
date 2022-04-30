@@ -220,7 +220,7 @@ public class ArbolGeneral<T> {
 		cola.encolar(this);
 		cola.encolar(null);
 		int cantidadNodos = 0;
-		int cantidadNodosMaximo = 0;
+		int cantidadNodosMaximo = 1;
 		while (!cola.esVacia()) {
 			arbol = cola.desencolar();
 			if (arbol != null) {

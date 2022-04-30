@@ -204,8 +204,10 @@ public class ArbolBinario<T> {
 		ArbolBinario<T> arbol = null;
 		// Creamos una cola y encolamos la raiz y la marca
 		ColaGenerica<ArbolBinario<T>> cola = new ColaGenerica<>();
+		int nivel = 0;
 		cola.encolar(this);
 		cola.encolar(null);
+		System.out.println("Nivel: " + nivel);
 		// Proceso la cola: mientras tengo elementos
 		while (!cola.esVacia()) {
 			// Saco un elemento, verifico si es un nodo o una marca
@@ -223,6 +225,8 @@ public class ArbolBinario<T> {
 			} else {
 				// Si es una marca y tengo elementos en la cola entonces
 				if (!cola.esVacia()) {
+					System.out.println();
+					System.out.println("Nivel: " + ++nivel);
 					cola.encolar(null);
 				}
 			}
