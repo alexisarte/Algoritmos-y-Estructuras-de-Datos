@@ -1,5 +1,6 @@
 package tp04.ejercicio7;
 
+import tp02.ejercicio2.ListaGenerica;
 import tp04.ejercicio1.ArbolGeneral;
 
 public class RedDeAguaPotable {
@@ -14,23 +15,24 @@ public class RedDeAguaPotable {
 		return arbol;
 	}
 
-	public double minimoCaudalRecursivo(double caudal, double minimo, ArbolGeneral<String> arbol) {
+	public double minimoCaudal(double caudal) {
+		if (!this.getArbol().esVacio()) {
+			return this.minimoCaudal(caudal, caudal, this.getArbol());
+		}
+		return caudal;
+	}
+	
+	public double minimoCaudal(double caudal, double caudalMinimo, ArbolGeneral<String> arbol) {
 		if (arbol.esHoja()) {
 			return caudal;
 		} else {
-			arbol.getHijos().comenzar();
-			while (!arbol.getHijos().fin()) {
-				minimo = Math.min(minimo, minimoCaudalRecursivo(caudal / arbol.getHijos().tamanio(), minimo, arbol.getHijos().proximo()));
+			ListaGenerica<ArbolGeneral<String>> hijos = arbol.getHijos();
+			hijos.comenzar();
+			while (!hijos.fin()) {
+				caudalMinimo = Math.min(caudalMinimo, this.minimoCaudal(caudal / hijos.tamanio(), caudalMinimo, hijos.proximo()));
 			}
 		}
-		return minimo;
-	}
-
-	public double minimoCaudal(double caudal) {
-		if (!this.getArbol().esVacio()) {
-			return minimoCaudalRecursivo(caudal, caudal, this.getArbol());
-		}
-		return caudal;
+		return caudalMinimo;
 	}
 
 }

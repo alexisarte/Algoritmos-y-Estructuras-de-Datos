@@ -241,30 +241,34 @@ public class ArbolGeneral<T> {
 		return cantidadNodosMaximo;
 	}
 
-	private ArbolGeneral<T> buscar(T x) {
-		ArbolGeneral<T> subArbol = null;
-		if (!this.esVacio()) { //Si quito esta condicion si arbol = null no es igual a k y no tiene hijos, me ahorro dos condicios, y no
-			if (this.getDato() == x) {
+	private ArbolGeneral<T> buscarArbol(T valor, int nodos) {
+		ArbolGeneral<T> arbol = null;
+		if (!this.esVacio()) {
+			if (this.getDato() == valor && nodos > 0) {
 				return this;
-			} else if (this.tieneHijos()) {
-				this.getHijos().comenzar();
-				while (!this.getHijos().fin() && subArbol == null) {
-					subArbol = this.getHijos().proximo().buscar(x);
+			}
+			++nodos;
+			if (this.tieneHijos()) {
+				ListaGenerica<ArbolGeneral<T>> listaDeHijos = this.getHijos();
+				listaDeHijos.comenzar();
+				while (!listaDeHijos.fin() && arbol == null) {
+					arbol = listaDeHijos.proximo().buscarArbol(valor, nodos);
 				}
 			}
 		}
-		return subArbol;
+		return arbol;
 	}
 
 	public boolean esAncestro(T a, T b) {
-		ArbolGeneral<T> arbol = null;
+		ArbolGeneral<T> arbolA = null;
+		ArbolGeneral<T> arbolB = null;
 		if (!this.esVacio()) {
-			arbol = this.buscar(a);
-			if (arbol != null) {
-				arbol = arbol.buscar(b);
+			arbolA = this.buscarArbol(a, 1); // Busco el arbol donde esta el nodoA para luego buscar en ese arbol al nodo b									// nodoB
+			if (arbolA != null) {
+				arbolB = arbolA.buscarArbol(b, 0); // Si existe el nodo a, entonces busco en ese arbol al nodo b
 			}
 		}
-		return arbol != null;
+		return arbolB != null;
 	}
 
 }

@@ -10,16 +10,13 @@ public class TestRedDeAguaPotable {
 		
 		CrearArbolGeneral cargar = new  CrearArbolGeneral();
 		ArbolGeneral<String> arbol = cargar.crearArbolString();
-
+		RedDeAguaPotable redAguaPotable = new RedDeAguaPotable(arbol);
 		ListaEnlazadaGenerica<String> lista = arbol.recorridoPorNiveles();
 		
 		System.out.println(lista.toString());
-		
 		System.out.println();
 		
-		RedDeAguaPotable redAguaPotable = new RedDeAguaPotable(arbol);
-		
-		System.out.println(redAguaPotable.minimoCaudal(1000));
+		System.out.println("Minimo caudal: " + redAguaPotable.minimoCaudal(1000));
 	}
 
 }

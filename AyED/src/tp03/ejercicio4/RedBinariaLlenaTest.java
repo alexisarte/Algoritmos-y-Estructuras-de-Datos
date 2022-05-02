@@ -13,7 +13,7 @@ public class RedBinariaLlenaTest {
 		RedBinariaLlena red = new RedBinariaLlena(arbol);
 		
 		arbol.printPreorden();
-		System.out.println("Retardo de reenvío: " + red.retardoReenvio());
+		System.out.println("Retardo de reenvío máximo: " + red.retardoReenvio());
 		
 	}
 
