@@ -39,15 +39,20 @@ public class RecorridosAG {
 
 	private void numerosImparesMayoresQueInOrden(ArbolGeneral<Integer> a, Integer n, ListaGenerica<Integer> lista) {
 		if (!a.esVacio()) {
-			if ((a.getDato() % 2 != 0) && (a.getDato() > n)) {
-				lista.agregarFinal(a.getDato());
-			}
 			if (a.tieneHijos()) {
 				ListaGenerica<ArbolGeneral<Integer>> hijos = a.getHijos();
 				hijos.comenzar();
-				while (!hijos.fin()) {
-					this.numerosImparesMayoresQueInOrden(hijos.proximo(), n, lista);
-				}
+				// Llamar recursivamente con el primer hijo
+				this.numerosImparesMayoresQueInOrden(hijos.proximo(), n, lista);
+			}
+			// Procesar el dato
+			if ((a.getDato() % 2 != 0) && (a.getDato() > n)) {
+				lista.agregarFinal(a.getDato());
+			}
+			// Lamar recursivamente con el resto de los hijos
+			ListaGenerica<ArbolGeneral<Integer>> hijos = a.getHijos();
+			while (!hijos.fin()) {
+				this.numerosImparesMayoresQueInOrden(hijos.proximo(), n, lista);
 			}
 		}
 	}
@@ -61,15 +66,15 @@ public class RecorridosAG {
 
 	private void numerosImparesMayoresQuePostOrden(ArbolGeneral<Integer> a, Integer n, ListaGenerica<Integer> lista) {
 		if (!a.esVacio()) {
-			if ((a.getDato() % 2 != 0) && (a.getDato() > n)) {
-				lista.agregarFinal(a.getDato());
-			}
 			if (a.tieneHijos()) {
 				ListaGenerica<ArbolGeneral<Integer>> hijos = a.getHijos();
 				hijos.comenzar();
 				while (!hijos.fin()) {
 					this.numerosImparesMayoresQuePostOrden(hijos.proximo(), n, lista);
 				}
+			}
+			if ((a.getDato() % 2 != 0) && (a.getDato() > n)) {
+				lista.agregarFinal(a.getDato());
 			}
 		}
 	}

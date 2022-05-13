@@ -13,11 +13,17 @@ public class RecorridosAGTest {
 		
 		ArbolGeneral<Integer> arbol = crear.crearArbolDeEnteros();
 		
-		ListaGenerica<Integer> lista = recorridos.numerosImparesMayoresQuePorNiveles(arbol, 10);
+		ListaGenerica<Integer> lista = recorridos.numerosImparesMayoresQuePreOrden(arbol, -4);
 		
 		System.out.println(arbol.preOrden() + "\n");
 		
-		System.out.println("Numero impares mayores que n: " + lista.toString());
+		System.out.println("Numero impares mayores que n, preorden: " + lista.toString());
+		
+		lista = recorridos.numerosImparesMayoresQueInOrden(arbol, -4);
+		System.out.println("Numero impares mayores que n, inorden: " + lista.toString());
+		
+		lista = recorridos.numerosImparesMayoresQuePostOrden(arbol, -4);
+		System.out.println("Numero impares mayores que n, postorden: " + lista.toString());
 
 	}
 

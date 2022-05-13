@@ -8,8 +8,8 @@ public class CrearArbolGeneral {
 //					-2				Nivel 0
 //				  /     \				
 //				-1	    -8			Nivel 1
-//			  /     \  	 |
-//			 -5     -4  -13			Nivel 2
+//			  /     \  	  \
+//			 -5     -4    -13		Nivel 2
 //			  |   /  |  \
 //			 18 -7  11   -3			Nivel 3
 //			  |        / | | \

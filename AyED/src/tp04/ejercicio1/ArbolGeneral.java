@@ -87,22 +87,22 @@ public class ArbolGeneral<T> {
 		return lista;
 	}
 
-	private void posOrden(ListaEnlazadaGenerica<T> lista) {
+	private void postOrden(ListaEnlazadaGenerica<T> lista) {
 		if (!this.esVacio()) {
 			if (this.tieneHijos()) {
 				ListaGenerica<ArbolGeneral<T>> lHijos = this.getHijos();
 				lHijos.comenzar();
 				while (!lHijos.fin()) {
-					lHijos.proximo().posOrden(lista);
+					lHijos.proximo().postOrden(lista);
 				}
 			}
 			lista.agregarFinal(this.getDato());
 		}
 	}
 
-	public ListaEnlazadaGenerica<T> posOrden() {
+	public ListaEnlazadaGenerica<T> postOrden() {
 		ListaEnlazadaGenerica<T> lista = new ListaEnlazadaGenerica<>();
-		this.posOrden(lista);
+		this.postOrden(lista);
 		return lista;
 	}
 
@@ -125,13 +125,14 @@ public class ArbolGeneral<T> {
 	}
 
 	public ListaEnlazadaGenerica<T> inOrden() {
-		// Mi metodo que retorna una lista con los elementos del ï¿½rbol receptor, en
-		// inorder
 		ListaEnlazadaGenerica<T> lista = new ListaEnlazadaGenerica<>();
 		this.inOrden(lista);
 		return lista;
 	}
 
+	// Método que retorna una lista con los elementos del Árbol receptor, en orden de recorrido por
+	// niveles de arriba hacia abajo y de izquierda a derecha, incluyendo algún elemento que indique
+	// el fin de cada nivel
 	public ListaEnlazadaGenerica<T> recorridoPorNiveles() {
 		ListaEnlazadaGenerica<T> lista = new ListaEnlazadaGenerica<>();
 		ArbolGeneral<T> arbol = null;
@@ -159,31 +160,33 @@ public class ArbolGeneral<T> {
 				if (!cola.esVacia()) {
 					cola.encolar(null);
 				}
+				lista.agregarFinal(null);
 			}
 		}
 		return lista;
-	}
-
-	private int alturaRecursivo(int caminoMasLargo) {
-		if (this.esHoja()) {
-			return 0;
-		} else {
-			this.getHijos().comenzar();
-			while (!this.getHijos().fin()) {
-				caminoMasLargo = Math.max(caminoMasLargo, this.getHijos().proximo().altura());
-			}
-			++caminoMasLargo;
-		}
-		return caminoMasLargo;
 	}
 
 //  Devuelve la altura del arbol, es decir, la longitud del camino mas largo desde el nodo raiz hasta una hoja.
 	public Integer altura() {
 		int caminoMaximo = -1;
 		if (!this.esVacio()) {
-			return this.alturaRecursivo(caminoMaximo);
+			return this.altura(caminoMaximo);
 		}
 		return caminoMaximo;
+	}
+
+	// De abajo hacia arriba
+	private int altura(int caminoMasLargo) {
+		if (this.esHoja()) {
+			return 0;
+		} else {
+			ListaGenerica<ArbolGeneral<T>> listaDehijos = this.getHijos();
+			listaDehijos.comenzar();
+			while (!listaDehijos.fin()) {
+				caminoMasLargo = Math.max(caminoMasLargo, listaDehijos.proximo().altura());
+			}
+		}
+		return ++caminoMasLargo;
 	}
 
 //	Devuelve la profundidad o nivel del dato en el arbol. El nivel de un nodo es la longitud del unico camino de la raiz al nodo
@@ -263,7 +266,8 @@ public class ArbolGeneral<T> {
 		ArbolGeneral<T> arbolA = null;
 		ArbolGeneral<T> arbolB = null;
 		if (!this.esVacio()) {
-			arbolA = this.buscarArbol(a, 1); // Busco el arbol donde esta el nodoA para luego buscar en ese arbol al nodo b									// nodoB
+			arbolA = this.buscarArbol(a, 1); // Busco el arbol donde esta el nodoA para luego buscar en ese arbol al
+												// nodo b // nodoB
 			if (arbolA != null) {
 				arbolB = arbolA.buscarArbol(b, 0); // Si existe el nodo a, entonces busco en ese arbol al nodo b
 			}

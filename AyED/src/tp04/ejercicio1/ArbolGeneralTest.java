@@ -10,7 +10,8 @@ public class ArbolGeneralTest {
 		char m = 'B';
 
 		System.out.println(arbol.recorridoPorNiveles());
-
+		
+		System.out.println("Altura del arbol: " + arbol.altura());
 		System.out.println("Ancho del arbol: " + arbol.ancho());
 		System.out.println("Ancho de la hoja: " + hoja.ancho());
 		System.out.println(n + " es ancestro de " + m + "? " + arbol.esAncestro(n, m));
