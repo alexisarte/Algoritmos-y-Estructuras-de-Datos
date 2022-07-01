@@ -1,12 +1,13 @@
-package tp04.ejercicio1;
+package parciales.arboles;
 
 import tp02.ejercicio2.ListaEnlazadaGenerica;
 import tp02.ejercicio2.ListaGenerica;
+import tp04.ejercicio1.ArbolGeneral;
+import tp04.ejercicio1.CrearArbolGeneral;
 
 public class ParcialTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		Parcial parcial = new Parcial();
 		CrearArbolGeneral crear = new CrearArbolGeneral();
 		ArbolGeneral<Character> arbol = crear.crearArbolCharacter();
@@ -17,10 +18,6 @@ public class ParcialTest {
 		while (!listaDeListas.fin()) {
 			lista = listaDeListas.proximo();
 			System.out.println(lista.toString());
-//			lista.comenzar();
-//			while (!lista.fin()) {
-//				lista.proximo();
-//			}
 		}
 	}
 

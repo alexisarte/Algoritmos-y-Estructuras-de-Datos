@@ -1,7 +1,8 @@
-package tp04.ejercicio1;
+package parciales.arboles;
 
 import tp02.ejercicio2.ListaEnlazadaGenerica;
 import tp02.ejercicio2.ListaGenerica;
+import tp04.ejercicio1.ArbolGeneral;
 
 public class Parcial {
 
@@ -14,7 +15,6 @@ public class Parcial {
 
 	private void caminosPares(ArbolGeneral<Character> arbol, ListaGenerica<ListaGenerica<Character>> listaDeListas,
 			ListaGenerica<Character> caminoActual, int length) {
-		// TODO Auto-generated method stub
 		if (!arbol.esVacio()) {
 			caminoActual.agregarFinal(arbol.getDato());
 			if (arbol.esHoja()) {
