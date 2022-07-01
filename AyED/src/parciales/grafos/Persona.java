@@ -1,4 +1,4 @@
-package parciales;
+package parciales.grafos;
 
 public class Persona {
     
@@ -14,16 +14,12 @@ public class Persona {
         return this.id;
     }
     
-    public boolean esJubilado() {
-        return this.tipo == "jubilado";
-    }
-
     public String getNombre() {
         return this.id;
     }
     
-    public String toString() {
-        return this.id;
+    public boolean esJubilado() {
+        return this.tipo == "jubilado";
     }
 
 }

@@ -1,4 +1,4 @@
-package parciales;
+package parciales.grafos;
 
 import tp02.ejercicio2.ListaEnlazadaGenerica;
 import tp02.ejercicio2.ListaGenerica;
@@ -9,22 +9,22 @@ import tp06.ejercicio3.Vertice;
 
 public class ParcialJubilados {
 
-	public ListaEnlazadaGenerica<Persona> bfs(Grafo<Persona> grafo, Persona empleado, int distancia, int maxJubilados) {
+	public ListaEnlazadaGenerica<Persona> jubilados(Grafo<Persona> grafo, Persona empleado, int distancia, int maxJubilados) {
         ListaEnlazadaGenerica<Persona> jubilados = new ListaEnlazadaGenerica<Persona>();
         ListaGenerica<Vertice<Persona>> vertices = grafo.listaDeVertices();
-        boolean[] visitados = new boolean[vertices.tamanio() + 1];
         Vertice<Persona> vertice = null;
         vertices.comenzar();
         while (!vertices.fin() && !vertice.dato().getId().equals(empleado.getId())) {
 			vertice = vertices.proximo();
 		}
         if (vertice.dato().getId().equals(empleado.getId())) {
-        	this.bfs(grafo, vertice, jubilados, visitados, distancia, 40);
+        	boolean[] visitados = new boolean[vertices.tamanio() + 1];
+        	this.jubilados(grafo, vertice, jubilados, visitados, distancia, 40);
         }
         return jubilados;
     }
 
-	private void bfs(Grafo<Persona> grafo, Vertice<Persona> empleado,
+	private void jubilados(Grafo<Persona> grafo, Vertice<Persona> empleado,
 			ListaEnlazadaGenerica<Persona> jubilados, boolean[] visitados, int distancia, int maxJubilados) {
 		ColaGenerica<Vertice<Persona>> cola = new ColaGenerica<>();
 		Vertice<Persona> vertice = null, adyacente = null;
@@ -35,8 +35,6 @@ public class ParcialJubilados {
 		while (!cola.esVacia() && (distancia > 0) && (jubilados.tamanio() < maxJubilados)) {
 			vertice = cola.desencolar();
 			if (vertice != null) {
-				// Proceso el dato
-				
 				ListaGenerica<Arista<Persona>> aristas = grafo.listaDeAdyacentes(vertice);
 				aristas.comenzar();
 				while (!aristas.fin() && jubilados.tamanio() < maxJubilados) {
