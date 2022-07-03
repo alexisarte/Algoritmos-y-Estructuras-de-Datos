@@ -31,29 +31,33 @@ public class Mapa {
 	// en cuenta el combustible).
 	public ListaGenerica<String> devolverCamino(String ciudad1, String ciudad2) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> verticeCiudad1 = buscarOrigen(ciudad1);
-		if (verticeCiudad1 != null) {
+		Vertice<String> origen = buscarOrigen(ciudad1);
+		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.devolverCamino(verticeCiudad1.getPosicion(), ciudad2, visitados, camino);
+			this.devolverCamino(origen, ciudad2, visitados, camino);
 		}
 		return camino;
 	}
 
-	private void devolverCamino(int i, String ciudad2, boolean[] visitados, ListaGenerica<String> camino) {
-		Vertice<String> verticeActual = this.mapaCiudades.listaDeVertices().elemento(i);
+	private void devolverCamino(Vertice<String> verticeActual, String ciudad2, boolean[] visitados,
+			ListaGenerica<String> camino) {
+		visitados[verticeActual.getPosicion()] = true;
 		camino.agregarFinal(verticeActual.dato());
-		visitados[i] = true;
-		Arista<String> adyacenteActual;
+		Vertice<String> adyacente;
+		Arista<String> arista;
 		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> adyacentes = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			adyacentes.comenzar();
-			while (!adyacentes.fin() && !camino.incluye(ciudad2)) {
-				adyacenteActual = adyacentes.proximo();
-				if (!visitados[adyacenteActual.verticeDestino().getPosicion()]) {
-					this.devolverCamino(adyacenteActual.verticeDestino().getPosicion(), ciudad2, visitados, camino);
+			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
+			aristas.comenzar();
+			while (!aristas.fin() && !camino.incluye(ciudad2)) {
+				arista = aristas.proximo();
+				adyacente = arista.verticeDestino();
+				if (!visitados[adyacente.getPosicion()]) {
+					this.devolverCamino(adyacente, ciudad2, visitados, camino);
 				}
 			}
 		}
+		// No es necesario desmarcar los vertices ya visitados porque se retorna el
+		// primer camino encontrado.
 		if (!camino.incluye(ciudad2)) {
 			camino.eliminarEn(camino.tamanio());
 		}
@@ -66,29 +70,28 @@ public class Mapa {
 	public ListaGenerica<String> devolverCaminoExceptuando(String ciudad1, String ciudad2,
 			ListaGenerica<String> ciudades) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> verticeCiudad1 = buscarOrigen(ciudad1);
-		if (verticeCiudad1 != null) {
+		Vertice<String> origen = buscarOrigen(ciudad1);
+		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.devolverCaminoExceptuando(verticeCiudad1.getPosicion(), ciudad2, ciudades, visitados, camino);
+			this.devolverCaminoExceptuando(origen, ciudad2, ciudades, visitados, camino);
 		}
 		return camino;
 	}
 
-	private void devolverCaminoExceptuando(int i, String ciudad2, ListaGenerica<String> ciudades, boolean[] visitados,
-			ListaGenerica<String> camino) {
-		Vertice<String> verticeActual = this.mapaCiudades.listaDeVertices().elemento(i);
+	private void devolverCaminoExceptuando(Vertice<String> verticeActual, String ciudad2,
+			ListaGenerica<String> ciudades, boolean[] visitados, ListaGenerica<String> camino) {
+		visitados[verticeActual.getPosicion()] = true;
 		camino.agregarFinal(verticeActual.dato());
-		visitados[i] = true;
-		Arista<String> adyacenteActual;
+		Vertice<String> adyacente;
+		Arista<String> arista;
 		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> adyacentes = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			adyacentes.comenzar();
-			while (!adyacentes.fin()) {
-				adyacenteActual = adyacentes.proximo();
-				if (!visitados[adyacenteActual.verticeDestino().getPosicion()]
-						&& !ciudades.incluye(adyacenteActual.verticeDestino().dato())) {
-					this.devolverCaminoExceptuando(adyacenteActual.verticeDestino().getPosicion(), ciudad2, ciudades,
-							visitados, camino);
+			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
+			aristas.comenzar();
+			while (!aristas.fin() && !camino.incluye(ciudad2)) {
+				arista = aristas.proximo();
+				adyacente = arista.verticeDestino();
+				if (!visitados[adyacente.getPosicion()] && !ciudades.incluye(adyacente.dato())) {
+					this.devolverCaminoExceptuando(adyacente, ciudad2, ciudades, visitados, camino);
 				}
 			}
 		}
@@ -104,35 +107,41 @@ public class Mapa {
 	public ListaGenerica<String> caminoMasCorto(String ciudad1, String ciudad2) {
 		ListaGenerica<String> caminoActual = new ListaEnlazadaGenerica<>();
 		ListaGenerica<String> caminoMasCorto = new ListaEnlazadaGenerica<>();
-		Vertice<String> verticeCiudad1 = buscarOrigen(ciudad1);
-		if (verticeCiudad1 != null) {
+		Vertice<String> origen = buscarOrigen(ciudad1);
+		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.caminoMasCorto(verticeCiudad1.getPosicion(), ciudad2, visitados, caminoActual, caminoMasCorto);
+			this.caminoMasCorto(origen, ciudad2, visitados, caminoActual, caminoMasCorto);
 		}
 		return caminoMasCorto;
 	}
 
-	private void caminoMasCorto(int i, String ciudad2, boolean[] visitados, ListaGenerica<String> caminoActual,
-			ListaGenerica<String> caminoMasCorto) {
-		Vertice<String> verticeActual = this.mapaCiudades.listaDeVertices().elemento(i);
+	private void caminoMasCorto(Vertice<String> verticeActual, String ciudad2, boolean[] visitados,
+			ListaGenerica<String> caminoActual, ListaGenerica<String> caminoMasCorto) {
+		visitados[verticeActual.getPosicion()] = true;
 		caminoActual.agregarFinal(verticeActual.dato());
-		visitados[i] = true;
-		Arista<String> adyacenteActual;
+		Vertice<String> adyacente;
+		Arista<String> arista;
 		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> adyacentes = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			adyacentes.comenzar();
-			while (!adyacentes.fin()) {
-				adyacenteActual = adyacentes.proximo();
-				if (!visitados[adyacenteActual.verticeDestino().getPosicion()]) {
-					this.caminoMasCorto(adyacenteActual.verticeDestino().getPosicion(), ciudad2, visitados,
-							caminoActual, caminoMasCorto);
+			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
+			aristas.comenzar();
+			while (!aristas.fin()) {
+				arista = aristas.proximo();
+				adyacente = arista.verticeDestino();
+				if (!visitados[adyacente.getPosicion()]) {
+					this.caminoMasCorto(adyacente, ciudad2, visitados, caminoActual, caminoMasCorto);
 				}
 			}
-		} else if (caminoActual.tamanio() < caminoMasCorto.tamanio() || caminoMasCorto.tamanio() == 0) {
-			clear(caminoMasCorto);
-			clonar(caminoActual, caminoMasCorto);
+		} else if ((caminoActual.tamanio() < caminoMasCorto.tamanio()) || (caminoMasCorto.tamanio() == 0)) {
+			caminoMasCorto.comenzar();
+			while (!caminoMasCorto.fin()) {
+				caminoMasCorto.eliminar(caminoMasCorto.proximo());
+			}
+			caminoActual.comenzar();
+			while (!caminoActual.fin()) {
+				caminoMasCorto.agregarFinal(caminoActual.proximo());
+			}
 		}
-		visitados[i] = false;
+		visitados[verticeActual.getPosicion()] = false;
 		caminoActual.eliminarEn(caminoActual.tamanio());
 	}
 
@@ -140,40 +149,35 @@ public class Mapa {
 	// ciudad2. El auto no debe quedarse sin combustible y no puede cargar. Si no
 	// existe camino retorna la lista vacía.
 	public ListaGenerica<String> caminoSinCargarCombustible(String ciudad1, String ciudad2, int tanqueAuto) {
-		ListaGenerica<String> caminoActual = new ListaEnlazadaGenerica<>();
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> verticeCiudad1 = buscarOrigen(ciudad1);
-		if (verticeCiudad1 != null) {
+		Vertice<String> origen = buscarOrigen(ciudad1);
+		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.caminoSinCargarCombustible(verticeCiudad1.getPosicion(), ciudad2, visitados, caminoActual, camino,
-					tanqueAuto);
+			this.caminoSinCargarCombustible(origen, ciudad2, visitados, camino, tanqueAuto);
 		}
 		return camino;
 	}
 
-	private void caminoSinCargarCombustible(int i, String ciudad2, boolean[] visitados,
-			ListaGenerica<String> caminoActual, ListaGenerica<String> camino, int tanqueAuto) {
-		Vertice<String> verticeActual = this.mapaCiudades.listaDeVertices().elemento(i);
-		caminoActual.agregarFinal(verticeActual.dato());
-		visitados[i] = true;
-		Arista<String> adyacenteActual;
+	private void caminoSinCargarCombustible(Vertice<String> verticeActual, String ciudad2, boolean[] visitados,
+			ListaGenerica<String> camino, int tanqueAuto) {
+		visitados[verticeActual.getPosicion()] = true;
+		camino.agregarFinal(verticeActual.dato());
+		Vertice<String> adyacente;
+		Arista<String> arista;
 		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> adyacentes = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			adyacentes.comenzar();
-			while (!adyacentes.fin()) {
-				adyacenteActual = adyacentes.proximo();
-				if (!visitados[adyacenteActual.verticeDestino().getPosicion()]
-						&& !(tanqueAuto <= adyacenteActual.peso())) {
-					this.caminoSinCargarCombustible(adyacenteActual.verticeDestino().getPosicion(), ciudad2, visitados,
-							caminoActual, camino, tanqueAuto - adyacenteActual.peso());
+			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
+			aristas.comenzar();
+			while (!aristas.fin() && !camino.incluye(ciudad2)) {
+				arista = aristas.proximo();
+				adyacente = arista.verticeDestino();
+				if (!visitados[adyacente.getPosicion()] && !(tanqueAuto <= arista.peso())) {
+					this.caminoSinCargarCombustible(adyacente, ciudad2, visitados, camino, tanqueAuto - arista.peso());
 				}
 			}
-		} else {
-			clear(camino);
-			clonar(caminoActual, camino);
 		}
-		visitados[i] = false;
-		caminoActual.eliminarEn(caminoActual.tamanio());
+		if (!camino.incluye(ciudad2)) {
+			camino.eliminarEn(camino.tamanio());
+		}
 	}
 
 	// Retorna la lista de ciudades que forman un camino para llegar de ciudad1 a
@@ -184,62 +188,49 @@ public class Mapa {
 	public ListaGenerica<String> caminoConMenorCargaDeCombustible(String ciudad1, String ciudad2, int tanqueAuto) {
 		ListaGenerica<String> caminoActual = new ListaEnlazadaGenerica<>();
 		Camino camino = new Camino();
-		Vertice<String> verticeCiudad1 = buscarOrigen(ciudad1);
-		if (verticeCiudad1 != null) {
+		Vertice<String> origen = buscarOrigen(ciudad1);
+		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.caminoConMenorCargaDeCombustible(verticeCiudad1.getPosicion(), ciudad2, visitados, caminoActual,
-					camino, tanqueAuto, tanqueAuto, 0);
+			this.caminoConMenorCargaDeCombustible(origen, ciudad2, visitados, caminoActual, camino, tanqueAuto,
+					tanqueAuto, 0);
 		}
 		return camino.getLista();
 	}
 
-	private void caminoConMenorCargaDeCombustible(int i, String ciudad2, boolean[] visitados,
-			ListaGenerica<String> caminoActual, Camino camino, int tanqueAuto, int tanqueAuto2, int contador) {
-		Vertice<String> verticeActual = this.mapaCiudades.listaDeVertices().elemento(i);
+	private void caminoConMenorCargaDeCombustible(Vertice<String> verticeActual, String ciudad2, boolean[] visitados,
+			ListaGenerica<String> caminoActual, Camino camino, int tanqueAuto, int tanqueLleno, int cantCargas) {
+		visitados[verticeActual.getPosicion()] = true;
 		caminoActual.agregarFinal(verticeActual.dato());
-		visitados[i] = true;
-		Arista<String> adyacenteActual;
+		Vertice<String> adyacente;
+		Arista<String> arista;
 		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> adyacentes = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			adyacentes.comenzar();
-			while (!adyacentes.fin()) {
-				adyacenteActual = adyacentes.proximo();
-				if (!visitados[adyacenteActual.verticeDestino().getPosicion()]) {
-					if (tanqueAuto2 > adyacenteActual.peso()) {
-						if (tanqueAuto <= adyacenteActual.peso()) {
-							this.caminoConMenorCargaDeCombustible(adyacenteActual.verticeDestino().getPosicion(),
-									ciudad2, visitados, caminoActual, camino, (tanqueAuto - adyacenteActual.peso()),
-									tanqueAuto2, contador);
+			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
+			aristas.comenzar();
+			while (!aristas.fin()) {
+				arista = aristas.proximo();
+				adyacente = arista.verticeDestino();
+				if (!visitados[adyacente.getPosicion()]) {
+					if (tanqueLleno > arista.peso()) { // Si el costo de la ruta es menor que el tanque lleno
+						if (tanqueAuto > arista.peso()) {
+							this.caminoConMenorCargaDeCombustible(adyacente, ciudad2, visitados, caminoActual, camino,
+									(tanqueAuto - arista.peso()), tanqueLleno, cantCargas);
 						} else {
-							this.caminoConMenorCargaDeCombustible(adyacenteActual.verticeDestino().getPosicion(),
-									ciudad2, visitados, caminoActual, camino, (tanqueAuto2 - adyacenteActual.peso()),
-									tanqueAuto2, ++contador);
+							// Si el auto se quedara sin combustible en medio de una ruta, se carga en la
+							// ciudad actual y se continua con la ruta de la ciudad siguiente.
+							this.caminoConMenorCargaDeCombustible(adyacente, ciudad2, visitados, caminoActual, camino,
+									(tanqueLleno - arista.peso()), tanqueLleno, ++cantCargas);
 						}
 					}
 				}
 			}
 		} else {
-			if (camino.getCosto() > contador) {
-				camino.setCosto(contador);
-				camino.clear();
+			if (cantCargas < camino.getCosto()) {
+				camino.setCosto(cantCargas);
 				camino.setLista(caminoActual.clonar());
 			}
 		}
-		visitados[i] = false;
+		visitados[verticeActual.getPosicion()] = false;
 		caminoActual.eliminarEn(caminoActual.tamanio());
-	}
-
-	private void clear(ListaGenerica<String> lista) {
-		lista.comenzar();
-		while (!lista.fin())
-			lista.eliminar(lista.proximo());
-	}
-
-	private void clonar(ListaGenerica<String> listaActual, ListaGenerica<String> lista) {
-		listaActual.comenzar();
-		while (!listaActual.fin()) {
-			lista.agregarFinal(listaActual.proximo());
-		}
 	}
 
 }

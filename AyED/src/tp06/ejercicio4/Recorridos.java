@@ -12,6 +12,7 @@ public class Recorridos<T> {
 	// Retorna una lista de vértices con el recorrido en profundidad del grafo
 	// recibido como parámetro.
 	public ListaGenerica<T> dfs(Grafo<T> grafo) {
+		// las listas empiezan en la pos 1 
 		boolean[] visitados = new boolean[grafo.listaDeVertices().tamanio() + 1];
 		ListaGenerica<T> lis = new ListaEnlazadaGenerica<>();
 		for (int i = 1; i < visitados.length; i++) {
@@ -26,8 +27,8 @@ public class Recorridos<T> {
 		int j = 0;
 		Arista<T> arista = null;
 		Vertice<T> v = grafo.listaDeVertices().elemento(i);
-		System.out.println(v.dato());
 		lis.agregarFinal(v.dato());
+		System.out.println(v.dato());
 		ListaGenerica<Arista<T>> adyacentes = grafo.listaDeAdyacentes(v);
 		adyacentes.comenzar();
 		while (!adyacentes.fin()) {
@@ -53,7 +54,7 @@ public class Recorridos<T> {
 
 	private void breadthFirstSearch(int i, Grafo<T> grafo, ListaGenerica<T> lista, boolean[] marca) {
 		ColaGenerica<Vertice<T>> cola = new ColaGenerica<>();
-		ListaGenerica<Arista<T>> adyacentes = null;
+		ListaGenerica<Arista<T>> aristas = null;
 		Arista<T> arista = null;
 		Vertice<T> vertice = grafo.listaDeVertices().elemento(i);
 		cola.encolar(vertice);
@@ -62,10 +63,10 @@ public class Recorridos<T> {
 		while (!cola.esVacia()) {
 			vertice = cola.desencolar();
 			lista.agregarFinal(vertice.dato());
-			adyacentes = grafo.listaDeAdyacentes(vertice);
-			adyacentes.comenzar();
-			while (!adyacentes.fin()) {
-				arista = adyacentes.proximo();
+			aristas = grafo.listaDeAdyacentes(vertice);
+			aristas.comenzar();
+			while (!aristas.fin()) {
+				arista = aristas.proximo();
 				j = arista.verticeDestino().getPosicion();
 				if (!marca[j]) {
 					marca[j] = true;
