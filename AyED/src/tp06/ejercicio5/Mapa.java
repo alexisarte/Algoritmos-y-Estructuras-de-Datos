@@ -70,43 +70,20 @@ public class Mapa {
 	public ListaGenerica<String> devolverCaminoExceptuando(String ciudad1, String ciudad2,
 			ListaGenerica<String> ciudades) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
+		Vertice<String> verticeOrigen = buscarVertice(ciudad1);
 		Vertice<String> vertice = null;
-		ciudades.comenzar()
-		while (!ciudades.fin()) {
-			vertice = buscarVertice(ciudades.proximo().dato);
-			if (vertice != null) {
-				visitados[vertice.getPosicion()] = true;
-			}
-		}
-		Vertice<String> vertice = buscarVertice(ciudad1);
-		if (vertice != null) {
+		if (verticeOrigen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.devolverCaminoExceptuando(vertice, ciudad2, ciudades, visitados, camino);
-		}
-		return camino;
-	}
-
-	private void devolverCaminoExceptuando(Vertice<String> verticeActual, String ciudad2,
-			ListaGenerica<String> ciudades, boolean[] visitados, ListaGenerica<String> camino) {
-		visitados[verticeActual.getPosicion()] = true;
-		camino.agregarFinal(verticeActual.dato());
-		Vertice<String> adyacente;
-		Arista<String> arista;
-		if (!verticeActual.dato().equals(ciudad2)) {
-			ListaGenerica<Arista<String>> aristas = this.mapaCiudades.listaDeAdyacentes(verticeActual);
-			aristas.comenzar();
-			while (!aristas.fin() && !camino.incluye(ciudad2)) {
-				arista = aristas.proximo();
-				adyacente = arista.verticeDestino();
-				if (!visitados[adyacente.getPosicion()]) {
-					this.devolverCaminoExceptuando(adyacente, ciudad2, ciudades, visitados, camino);
+			ciudades.comenzar();
+			while (!ciudades.fin()) {
+				vertice = buscarVertice(ciudades.proximo());
+				if (vertice != null) {
+					visitados[vertice.getPosicion()] = true;
 				}
 			}
+			this.devolverCamino(vertice, ciudad2, visitados, camino);
 		}
-		if (!camino.incluye(ciudad2)) {
-			camino.eliminarEn(camino.tamanio());
-		}
-
+		return camino;
 	}
 
 	// Retorna la lista de ciudades que forman el camino más corto para llegar de
