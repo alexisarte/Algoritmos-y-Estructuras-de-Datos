@@ -14,7 +14,7 @@ public class Mapa {
 		this.mapaCiudades = mapaCiudades;
 	}
 
-	private Vertice<String> buscarOrigen(String datoVertice) {
+	private Vertice<String> buscarVertice(String datoVertice) {
 		ListaGenerica<Vertice<String>> listaDeVertices = this.mapaCiudades.listaDeVertices();
 		Vertice<String> verticeActual;
 		listaDeVertices.comenzar();
@@ -31,7 +31,7 @@ public class Mapa {
 	// en cuenta el combustible).
 	public ListaGenerica<String> devolverCamino(String ciudad1, String ciudad2) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> origen = buscarOrigen(ciudad1);
+		Vertice<String> origen = buscarVertice(ciudad1);
 		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
 			this.devolverCamino(origen, ciudad2, visitados, camino);
@@ -70,10 +70,18 @@ public class Mapa {
 	public ListaGenerica<String> devolverCaminoExceptuando(String ciudad1, String ciudad2,
 			ListaGenerica<String> ciudades) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> origen = buscarOrigen(ciudad1);
-		if (origen != null) {
+		Vertice<String> vertice = null;
+		ciudades.comenzar()
+		while (!ciudades.fin()) {
+			vertice = buscarVertice(ciudades.proximo().dato);
+			if (vertice != null) {
+				visitados[vertice.getPosicion()] = true;
+			}
+		}
+		Vertice<String> vertice = buscarVertice(ciudad1);
+		if (vertice != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
-			this.devolverCaminoExceptuando(origen, ciudad2, ciudades, visitados, camino);
+			this.devolverCaminoExceptuando(vertice, ciudad2, ciudades, visitados, camino);
 		}
 		return camino;
 	}
@@ -90,7 +98,7 @@ public class Mapa {
 			while (!aristas.fin() && !camino.incluye(ciudad2)) {
 				arista = aristas.proximo();
 				adyacente = arista.verticeDestino();
-				if (!visitados[adyacente.getPosicion()] && !ciudades.incluye(adyacente.dato())) {
+				if (!visitados[adyacente.getPosicion()]) {
 					this.devolverCaminoExceptuando(adyacente, ciudad2, ciudades, visitados, camino);
 				}
 			}
@@ -107,7 +115,7 @@ public class Mapa {
 	public ListaGenerica<String> caminoMasCorto(String ciudad1, String ciudad2) {
 		ListaGenerica<String> caminoActual = new ListaEnlazadaGenerica<>();
 		ListaGenerica<String> caminoMasCorto = new ListaEnlazadaGenerica<>();
-		Vertice<String> origen = buscarOrigen(ciudad1);
+		Vertice<String> origen = buscarVertice(ciudad1);
 		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
 			this.caminoMasCorto(origen, ciudad2, visitados, caminoActual, caminoMasCorto);
@@ -150,7 +158,7 @@ public class Mapa {
 	// existe camino retorna la lista vacía.
 	public ListaGenerica<String> caminoSinCargarCombustible(String ciudad1, String ciudad2, int tanqueAuto) {
 		ListaGenerica<String> camino = new ListaEnlazadaGenerica<>();
-		Vertice<String> origen = buscarOrigen(ciudad1);
+		Vertice<String> origen = buscarVertice(ciudad1);
 		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
 			this.caminoSinCargarCombustible(origen, ciudad2, visitados, camino, tanqueAuto);
@@ -188,7 +196,7 @@ public class Mapa {
 	public ListaGenerica<String> caminoConMenorCargaDeCombustible(String ciudad1, String ciudad2, int tanqueAuto) {
 		ListaGenerica<String> caminoActual = new ListaEnlazadaGenerica<>();
 		Camino camino = new Camino();
-		Vertice<String> origen = buscarOrigen(ciudad1);
+		Vertice<String> origen = buscarVertice(ciudad1);
 		if (origen != null) {
 			boolean[] visitados = new boolean[this.mapaCiudades.listaDeVertices().tamanio() + 1];
 			this.caminoConMenorCargaDeCombustible(origen, ciudad2, visitados, caminoActual, camino, tanqueAuto,
