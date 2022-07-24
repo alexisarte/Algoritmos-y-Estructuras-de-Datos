@@ -1,1 +1,1 @@
-[Ir al enunciado](https://i.imgur.com/Q1u4NQV.png)
+![](https://i.imgur.com/Q1u4NQV.png)
