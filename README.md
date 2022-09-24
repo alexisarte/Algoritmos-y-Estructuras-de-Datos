@@ -6,7 +6,7 @@
 
 - [Heap][2]
 
-[2]: https://github.com/alexisarte/Algoritmos-y-Estructuras-de-Datos/tree/master/AyED/src/tp06
+[2]: https://github.com/alexisarte/Algoritmos-y-Estructuras-de-Datos/tree/master/AyED/src/heap
 
 - [Grafos][3]
 
